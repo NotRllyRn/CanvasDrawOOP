@@ -1,4 +1,4 @@
-task.wait(5)
+task.wait(10)
 
 local DrawMaster = require(game:GetService("ReplicatedStorage"):WaitForChild("CanvasMaster"))
 local CanvasTest = function(Canvas)
