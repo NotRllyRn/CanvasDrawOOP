@@ -1,11 +1,12 @@
 task.wait(10)
 
-local DrawMaster = require(game:GetService("ReplicatedStorage"):WaitForChild("CanvasMaster"))
+local DrawMaster = require(game:GetService("ReplicatedStorage"):WaitForChild("ViewportCanvas"))
 local CanvasTest = function(Canvas)
     local time = 0.05
     for x = 1, 15 do
         for y = 1, 15 do
-            Canvas.SetPixel(x, y, Color3.new())
+            Canvas:SetPixel(x, y, Color3.new())
+            Canvas:Render()
             task.wait(time)
         end
     end
@@ -25,15 +26,23 @@ local CreateScreen = function(index, height)
     Part.Size = Vector3.new(2, 2, 2)
     Part.CFrame = CFrame.new(0, 5 + (2 * height), 2 * index)
     Part.Parent = workspace
-    local Canvas = DrawMaster.new()
-    Canvas.CreateCanvas(Frame, Vector2.new(15, 15), Color3.new(1, 1, 1))
+	local Canvas = DrawMaster.new(15, 15)
+	Canvas:SetParent(Frame)
 
     print("Created screen " .. index)
     coroutine.resume(coroutine.create(function()
         while true do
-            Canvas.FillCanvas(Color3.new(1, 1, 1))
+            for i = 1, 15 do
+                for j = 1, 15 do
+                    Canvas:SetPixel(i, j, Color3.new(1, 1, 1))
+                end
+            end
             CanvasTest(Canvas)
-            Canvas.FillCanvas(Color3.new(1, 1, 1))
+            for i = 1, 15 do
+                for j = 1, 15 do
+                    Canvas:SetPixel(i, j, Color3.new(1, 1, 1))
+                end
+            end
         end
     end))
 end
